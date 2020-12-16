@@ -4,7 +4,7 @@
 - The main problem in this project was we got a huge dataset. It was easy to count the distance between two distance based on the function. However, it's not that easy to find the 'nearest' one in short time if we use travel algorithm which takes O(n). So we decided to use Hash. Hash algorithm is efficient on searching a specific elements.
 - To realize Hash algorithm, we first do the prepossing of data, using geoHash algorithm. (https://en.wikipedia.org/wiki/Geohash)
   GeoHash is very convenient for neighbour searching as it cut the space into continuous pieces and link them together in Z shape.
-  ！[picture](./readme_resources/Geohash-OddEvenDigits.png)
+![picture](./readme_resources/Geohash-OddEvenDigits.png)
 - We used json file to store the dictionaries. To reduce cost and save time, we used a hierarchy structure so that we don't have to load a huge dictionary every time. First, we use the first three letters to create the first level index. 
 ```
 2jq.json
