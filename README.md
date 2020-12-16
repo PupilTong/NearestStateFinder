@@ -2,9 +2,13 @@
 
 ## Problem Statement
 - The main problem in this project was we got a huge dataset. It was easy to count the distance between two distance based on the function. However, it's not that easy to find the 'nearest' one in short time if we use travel algorithm which takes O(n). So we decided to use Hash. Hash algorithm is efficient on searching a specific elements.
-- To realize Hash algorithm, we first do the prepossing of data, using geoHash algorithm. (https://en.wikipedia.org/wiki/Geohash)
+
+- To realize Hash algorithm, we first do the prepossing of data, using geoHash algorithm. This algorithm can translate a pair of latitude and longitude into a string and is capable to translate it back to coordinates. (https://en.wikipedia.org/wiki/Geohash)
+
   GeoHash is very convenient for neighbour searching as it cut the space into continuous pieces and link them together in Z shape.
 ![picture](./readme_resources/Geohash-OddEvenDigits.png)
+
+
 - We used json file to store the dictionaries. To reduce cost and save time, we used a hierarchy structure so that we don't have to load a huge dictionary every time. First, we use the first three letters to create the first level index. 
 ```
 2jq.json
@@ -12,9 +16,15 @@
 2jw.json
 ...
 ```
-  So we can only load one dictionary json file each time.
+  So we can only load one dictionary json file each time. These files are relatively small compared to a whole json file stores everything.
+  
 - Inside the json file, we build a dictionary in this kind of structure: ```"<geohash code>": "<State> <Province>"```. A good example will be ```"cbj1ky": " MN Wright"``` Once we got the input coordinates and transform it to geohash, it can be easily translated to state and province.
-- When finding the geohash code in our dictionary, the input point may have no match in our existing database. So we have to use binary search to give it a closest match. Fortunately, python supports the comparison between two strings. For example, it can directly tell that ```cbj1ky``` is smaller than ```cbj0yj```. Therefore, a standard binary search could be implement in our case without optimization.
+
+- When finding the geohash code in our dictionary, the input point may have no match in our existing database. So we have to use binary search to give it a closest match in our dictionary keys. Fortunately, python supports the comparison between two strings. For example, it can directly tell that ```cbj1ky``` is smaller than ```cbj0yj```. Therefore, a standard binary search could be implement in our case without optimization.
+
+- Additionary, because we need to know the nearest K points (1-10), we changed the search algorithm. After we got the nearest one in index i, we will then return the i-K/2 to i+K/2. This method sometimes cause trouble when the range i-K/2~i+K/2 located in two or more sub dictionaries. We used the binary search twice, one for sub dictionary search and one for key search, to solve it.
+
+- Another problem is that the dataset had different points with same state and province names. In the final results, we used ```set``` to remove all these replicated points.
 
 ## Execuating requirements
 * python 3.6 or higher
