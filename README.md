@@ -1,4 +1,21 @@
 # NearestStateFinder
+
+## Problem Statement
+- The main problem in this project was we got a huge dataset. It was easy to count the distance between two distance based on the function. However, it's not that easy to find the 'nearest' one in short time if we use travel algorithm which takes O(n). So we decided to use Hash. Hash algorithm is efficient on searching a specific elements.
+- To realize Hash algorithm, we first do the prepossing of data, using geoHash algorithm. (https://en.wikipedia.org/wiki/Geohash)
+  GeoHash is very convenient for neighbour searching as it cut the space into continuous pieces and link them together in Z shape.
+  ！[picture](./readme_resources/Geohash-OddEvenDigits.png)
+- We used json file to store the dictionaries. To reduce cost and save time, we used a hierarchy structure so that we don't have to load a huge dictionary every time. First, we use the first three letters to create the first level index. 
+```
+2jq.json
+2jr.json
+2jw.json
+...
+```
+  So we can only load one dictionary json file each time.
+- Inside the json file, we build a dictionary in this kind of structure: ```"<geohash code>": "<State> <Province>"```. A good example will be ```"cbj1ky": " MN Wright"``` Once we got the input coordinates and transform it to geohash, it can be easily translated to state and province.
+- When finding the geohash code in our dictionary, the input point may have no match in our existing database. So we have to use binary search to give it a closest match. Fortunately, python supports the comparison between two strings. For example, it can directly tell that ```cbj1ky``` is smaller than ```cbj0yj```. Therefore, a standard binary search could be implement in our case without optimization.
+
 ## Execuating requirements
 * python 3.6 or higher
 * linux x86-64
