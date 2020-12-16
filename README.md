@@ -1,12 +1,13 @@
 # NearestStateFinder
 
 ## Problem Statement
+### Description of the problem
 - The main problem in this project was we got a huge dataset. It was easy to count the distance between two distances based on the function. However, it's not that easy to find the 'nearest' one in a short time if we use the travel algorithm which takes O(n). So we decided to use Hash. The hash algorithm is efficient in searching for a specific element.
-
+### Relevant references and background materials
 - To realize the Hash algorithm, we first do the preprocessing of data, using the geoHash algorithm. This algorithm can translate a pair of latitude and longitude into a string and is capable to translate it back to coordinates. (https://en.wikipedia.org/wiki/Geohash)
 ![picture](./readme_resources/Geohash-OddEvenDigits.png)
   hash is very convenient for neighbor searching as it cut the space into continuous pieces and link them together in Z shape. 
-
+### High-level description of the implementation
 - We used the json file to store the dictionaries. To reduce cost and save time, we used a hierarchy structure so that we don't have to load a huge dictionary every time. First, we use the first three letters to create the first level index.
 ```
 2jq.json
@@ -23,6 +24,13 @@
 - Additionary, because we need to know the nearest K points (1-10), we changed the search algorithm. After we got the nearest one in index i, we will then return the i-K/2 to i+K/2. This method sometimes causes trouble when the range i-K/2~i+K/2 is located in two or more sub dictionaries. We used the binary search twice, one for sub dictionary search and one for key search, to solve it.
 
 - Another problem is that the dataset had different points with the same state and province names. In the final results, we used the ```set``` to remove all these replicated points.
+## Features:
+* Efficient storage and search
+* Use less space of reading data
+* Easy to add new nodes to dataset
+* User-friendly GUI
+* Hierarchy dictionaries
+* Double layer binary search
 
 ## Execuating requirements
 * python 3.6 or higher
